@@ -1,18 +1,32 @@
-function main(){
+async function main(){
     const countContainer = document.querySelector('#count-container');
     const incrementButton = document.querySelector('#increment-button');
     const decrementButton = document.querySelector('#decrement-button');
+    let res = await fetch("http://127.0.0.1:9001/counter")
+    let val = await res.json()
+    console.log(val)
+    let countValue = val.value;
 
-    let countValue = 0;
-
-    function increment(){
+    async function increment(){
         countValue++;
         countContainer.textContent = countValue;
+        let m = await fetch("http://127.0.0.1:9001/counter",
+        {
+            method:"PATCH",
+            headers: {'Content-Type':"application/json"},
+            body: JSON.stringify({value: countValue})
+        })
     }
 
-    function decrement(){
+    async function decrement(){
         countValue--;
         countContainer.textContent = countValue;
+        let m = await fetch("http://127.0.0.1:9001/counter",
+        {
+            method:"PATCH",
+            headers: {'Content-Type':"application/json"},
+            body: JSON.stringify({value: countValue})
+        })
     }
 
     incrementButton.addEventListener('click', increment);
